@@ -121,22 +121,20 @@
 
     // توليد أرقام الشقق (12 شقة لكل طابق)
     window.onload = function() {
-        // 1. الطابق الأرضي G
+        // 1. الطابق الأرضي G (التنسيق G1, G2...)
         let gGroup = document.createElement('optgroup');
         gGroup.label = "الطابق الأرضي (G)";
         for (let i = 1; i <= 12; i++) {
-            let val = 'G' + (i < 10 ? '0' + i : i);
+            let val = 'G' + i;
             gGroup.innerHTML += `<option value="${val}">شقة ${val}</option>`;
         }
         aptSelect.appendChild(gGroup);
 
-        // 2. الطوابق من 1 إلى 9
+        // 2. الطوابق من 1 إلى 9 (12 شقة لكل طابق)
         for (let floor = 1; floor <= 9; floor++) {
             let floorGroup = document.createElement('optgroup');
             floorGroup.label = `الطابق ${floor}`;
             for (let apt = 1; apt <= 12; apt++) {
-                // تنسيق رقم الشقة: (رقم الطابق + رقم الشقة خانتين)
-                // مثال: 101, 102 ... 112
                 let aptNum = apt < 10 ? '0' + apt : apt;
                 let val = floor + "" + aptNum; 
                 floorGroup.innerHTML += `<option value="${val}">شقة ${val}</option>`;
@@ -145,7 +143,7 @@
         }
     };
 
-    // منطق التصفير التلقائي والقفل
+    // منطق التصفير التلقائي والقفل عند اختيار "ممتنع"
     const statusSelect = document.getElementById('statusSelect');
     const amountInput = document.getElementById('amountInput');
     
@@ -160,12 +158,12 @@
         }
     });
 
-    // الإرسال الفعلي للبيانات
+    // إرسال البيانات إلى Google Sheets
     document.getElementById('paymentForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const btn = document.getElementById('btnSubmit');
         btn.disabled = true;
-        btn.innerText = "جاري الحفظ في السجل...";
+        btn.innerText = "جاري الحفظ...";
 
         fetch(scriptURL, { method: 'POST', body: new FormData(this)})
             .then(() => {
