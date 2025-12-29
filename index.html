@@ -3,80 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جباية كاميرات العمارة A409</title>
+    <title>إدارة عمارة A409</title>
     <style>
-        :root {
-            --primary-color: #1a5276;
-            --accent-color: #2980b9;
-            --bg-color: #f0f4f7;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .card {
-            background: white;
-            width: 90%;
-            max-width: 450px;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border-top: 8px solid var(--primary-color);
-        }
-
-        .header { text-align: center; margin-bottom: 1.5rem; }
-        .header h1 { color: var(--primary-color); margin: 0; font-size: 1.8rem; }
-        
-        .form-group { margin-bottom: 1.2rem; }
-        label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333; }
-        
-        select, input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            background-color: white;
-        }
-
-        input:read-only { background-color: #f8f9fa; color: #7f8c8d; border-color: #eee; }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover { background-color: var(--accent-color); }
-
-        #msg {
-            display: none;
-            text-align: center;
-            padding: 10px;
-            margin-top: 15px;
-            border-radius: 10px;
-            background-color: #d4edda;
-            color: #155724;
-            font-weight: bold;
-            border: 1px solid #c3e6cb;
-        }
-
-        optgroup { font-weight: bold; color: var(--primary-color); background-color: #f9f9f9; }
+        :root { --primary: #1a5276; --accent: #2980b9; --bg: #f0f4f7; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background: white; width: 90%; max-width: 450px; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 8px solid var(--primary); }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { color: var(--primary); margin: 0; font-size: 1.6rem; }
+        .info-box { background: #fff3cd; color: #856404; padding: 10px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 20px; border: 1px solid #ffeeba; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; color: #333; }
+        select, input { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem; box-sizing: border-box; }
+        input:read-only { background: #f8f9fa; color: #999; }
+        button { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: var(--accent); }
+        #msg { display: none; text-align: center; padding: 10px; margin-top: 15px; border-radius: 10px; background: #d4edda; color: #155724; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -84,12 +25,16 @@
 <div class="card">
     <div class="header">
         <h1>العمارة A409</h1>
-        <small>نظام جباية أجور الكاميرات</small>
+        <p>تحديث بيانات جباية الكاميرات</p>
+    </div>
+
+    <div class="info-box">
+        تنبيه: سيتم تحديث بيانات الشقة المختارة مباشرة في السجل دون تكرار الصفوف.
     </div>
 
     <form id="paymentForm">
         <div class="form-group">
-            <label>رقم الشقة</label>
+            <label>رقم الشقة (من إجمالي 120)</label>
             <select name="Departments" id="aptSelect" required>
                 <option value="" disabled selected>-- اختر الشقة --</option>
             </select>
@@ -101,84 +46,72 @@
                 <option value="" disabled selected>-- اختر الحالة --</option>
                 <option value="مسدد">✅ مسدد</option>
                 <option value="ممتنع">❌ ممتنع</option>
+                <option value="غير محدد">🔄 حذف/إعادة ضبط</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label>مبلغ التسديد</label>
-            <input type="number" name="amount" id="amountInput" placeholder="أدخل المبلغ" required min="0">
+            <label>المبلغ</label>
+            <input type="number" name="amount" id="amountInput" placeholder="0" required min="0">
         </div>
 
-        <button type="submit" id="btnSubmit">تثبيت العملية</button>
+        <button type="submit" id="btnSubmit">تحديث السجل</button>
     </form>
 
-    <div id="msg">تم الحفظ في السجل بنجاح! ✅</div>
+    <div id="msg">✅ تم تحديث بيانات الشقة بنجاح!</div>
 </div>
 
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycby_LjuhoL2pjxCjT4fdQEDDGC-J_J7jn375z3H3mNupFLoNH4iBEGCV0hXBp7HzmcDL/exec';
-    const aptSelect = document.getElementById('aptSelect');
-
-    // توليد أرقام الشقق (12 شقة لكل طابق)
+    
+    // توليد الشقق (12 أرضي + 9 طوابق × 12 شقة = 120 شقة)
     window.onload = function() {
-        // 1. الطابق الأرضي G (التنسيق G1, G2...)
-        let gGroup = document.createElement('optgroup');
-        gGroup.label = "الطابق الأرضي (G)";
+        const aptSelect = document.getElementById('aptSelect');
+        // الأرضي
+        let gGroup = document.createElement('optgroup'); gGroup.label = "الطابق الأرضي";
         for (let i = 1; i <= 12; i++) {
-            let val = 'G' + i;
-            gGroup.innerHTML += `<option value="${val}">شقة ${val}</option>`;
+            gGroup.innerHTML += `<option value="G${i}">شقة G${i}</option>`;
         }
         aptSelect.appendChild(gGroup);
 
-        // 2. الطوابق من 1 إلى 9 (12 شقة لكل طابق)
-        for (let floor = 1; floor <= 9; floor++) {
-            let floorGroup = document.createElement('optgroup');
-            floorGroup.label = `الطابق ${floor}`;
-            for (let apt = 1; apt <= 12; apt++) {
-                let aptNum = apt < 10 ? '0' + apt : apt;
-                let val = floor + "" + aptNum; 
-                floorGroup.innerHTML += `<option value="${val}">شقة ${val}</option>`;
+        // العلوية
+        for (let f = 1; f <= 9; f++) {
+            let group = document.createElement('optgroup'); group.label = `الطابق ${f}`;
+            for (let a = 1; a <= 12; a++) {
+                let val = f + (a < 10 ? '0' + a : '' + a);
+                group.innerHTML += `<option value="${val}">شقة ${val}</option>`;
             }
-            aptSelect.appendChild(floorGroup);
+            aptSelect.appendChild(group);
         }
     };
 
-    // منطق التصفير التلقائي والقفل عند اختيار "ممتنع"
     const statusSelect = document.getElementById('statusSelect');
     const amountInput = document.getElementById('amountInput');
-    
+
     statusSelect.addEventListener('change', function() {
-        if (this.value === "ممتنع") {
+        if (this.value === "ممتنع" || this.value === "غير محدد") {
             amountInput.value = 0;
             amountInput.readOnly = true;
         } else {
             amountInput.value = "";
             amountInput.readOnly = false;
-            amountInput.focus();
         }
     });
 
-    // إرسال البيانات إلى Google Sheets
     document.getElementById('paymentForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const btn = document.getElementById('btnSubmit');
-        btn.disabled = true;
-        btn.innerText = "جاري الحفظ...";
+        btn.disabled = true; btn.innerText = "جاري التحديث...";
 
         fetch(scriptURL, { method: 'POST', body: new FormData(this)})
             .then(() => {
                 document.getElementById('msg').style.display = "block";
                 this.reset();
                 amountInput.readOnly = false;
-                btn.disabled = false;
-                btn.innerText = "تثبيت العملية";
+                btn.disabled = false; btn.innerText = "تحديث السجل";
                 setTimeout(() => { document.getElementById('msg').style.display = "none"; }, 4000);
             })
-            .catch(err => {
-                alert("تعذر الإرسال. تأكد من اتصال الإنترنت.");
-                btn.disabled = false;
-                btn.innerText = "تثبيت العملية";
-            });
+            .catch(() => { alert("خطأ في الاتصال"); btn.disabled = false; });
     });
 </script>
 
